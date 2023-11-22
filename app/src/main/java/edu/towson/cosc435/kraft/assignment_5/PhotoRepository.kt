@@ -25,7 +25,7 @@ class PhotoRepository: IPhotoRepository {
     override suspend fun getBitmap(photo: Photo): Bitmap? {
         val bitmap: Bitmap? = pf.fetchIcon(photo.url)
         photo.bitmap = bitmap
-        updatePhoto(photo)
+//        updatePhoto(photo)
         return bitmap
 
     }

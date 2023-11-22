@@ -9,17 +9,24 @@ import androidx.navigation.compose.composable
 
 @Composable
  fun PhotoAppNavGraph(navController: NavHostController){
-    val vm: PhotoListViewModel = viewModel()
+    val plvm: PhotoListViewModel = viewModel()
+    val spvm:SelectPhotoViewModel = viewModel()
     NavHost(navController = navController,
       startDestination = Routes.PhotoList.route
      ){
           composable(Routes.PhotoList.route){
-              val photos by vm._photos
+              val photos by plvm._photos
               PhotoListView(
                   photos,
-                  updatePhotos = vm::awaitPhotos,
-                  getBitmap = vm::getBitmap
+                  getBitmap = plvm::getBitmap,
+                  navController = navController,
+                  onClick = spvm::setSelectPhotoBitmap,
+                  updatePhoto = plvm::updatePhoto
               )
-       }
+         }
+         composable(Routes.SelectPhoto.route){
+             val bitmap by spvm._bitmap
+             SelectPhotoView(bitmap)
+         }
     }
 }

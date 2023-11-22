@@ -12,12 +12,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHost
+import androidx.navigation.NavHostController
 
 @Composable
 fun PhotoListView(
     photos: List<Photo>,
-    updatePhotos: () -> Unit,
-    getBitmap: suspend (String) -> Bitmap?
+    updatePhoto: (Photo) -> Unit,
+    getBitmap: suspend (String) -> Bitmap?,
+    navController: NavHostController,
+    onClick: (Bitmap?) -> Unit
 ){
     Box(contentAlignment = Alignment.Center){
         LazyVerticalGrid(
@@ -26,8 +30,7 @@ fun PhotoListView(
         ) {
 
             items(photos) { photo ->
-                updatePhotos()
-                PhotoItem(photo, getBitmap)
+                PhotoItem(photo, getBitmap, navController, onClick, updatePhoto)
             }
         }
 

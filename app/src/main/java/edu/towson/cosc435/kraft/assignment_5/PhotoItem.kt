@@ -2,6 +2,7 @@ package edu.towson.cosc435.kraft.assignment_5
 
 import android.graphics.Bitmap
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -24,6 +25,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHost
+import androidx.navigation.NavHostController
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import kotlinx.coroutines.delay
@@ -31,7 +34,10 @@ import kotlinx.coroutines.delay
 @Composable
 fun PhotoItem(
     photo: Photo,
-    getBitmap: suspend (String) -> Bitmap?
+    getBitmap: suspend (String) -> Bitmap?,
+    navController: NavHostController,
+    onClick: (Bitmap?) -> Unit,
+    updatePhoto: (Photo) -> Unit,
 ){
     Column(
         modifier = Modifier
@@ -45,11 +51,19 @@ fun PhotoItem(
             mutableStateOf<Bitmap?>(null)
         }
 //        photo.bitmap = getBitmap(photo)
-        LaunchedEffect(key1 = photo.id){
-            bitmap = getBitmap(photo.download_url)
+//        LaunchedEffect(key1 = photo.id){
+//            bitmap = getBitmap(photo.download_url)
+//        }
+
+        if(bitmap != null && photo.bitmap == null){
+            photo.bitmap = bitmap
+            updatePhoto(photo)
         }
 
-        if(bitmap == null){
+        if(bitmap == null && photo.bitmap == null){
+            LaunchedEffect(key1 = photo.id){
+                bitmap = getBitmap(photo.download_url)
+            }
             CircularProgressIndicator(
                 modifier = Modifier
                     .width(64.dp)
@@ -60,8 +74,16 @@ fun PhotoItem(
 
         }else {
             Image(
-                modifier = Modifier.size(128.dp),
-                bitmap = bitmap!!.asImageBitmap(), contentDescription = null)
+                modifier = Modifier.size(128.dp).clickable {
+                        onClick(bitmap)
+                        navController.navigate(Routes.SelectPhoto.route){
+                            launchSingleTop = true
+                            popUpTo(Routes.PhotoList.route)
+                        }
+                },
+                bitmap = bitmap!!.asImageBitmap(),
+                contentDescription = null
+            )
         }
     }
 }

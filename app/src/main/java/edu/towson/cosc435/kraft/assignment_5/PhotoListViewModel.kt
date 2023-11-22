@@ -26,15 +26,16 @@ class PhotoListViewModel: ViewModel() {
         }
     }
 
-    fun awaitPhotos() {
-        _photos.value = _repository.getPhotos()
-    }
-
     suspend fun getBitmap(url: String): Bitmap? {
         return try {
             pf.fetchIcon(url)
         } catch (e: Exception){
             null
         }
+    }
+
+    fun updatePhoto(photo: Photo){
+        _repository.updatePhoto(photo)
+        _photos.value = _repository.getPhotos()
     }
 }
