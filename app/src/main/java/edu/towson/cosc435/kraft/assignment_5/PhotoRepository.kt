@@ -12,7 +12,7 @@ class PhotoRepository: IPhotoRepository {
     private val pf = PhotoFetcher()
 
     override suspend fun addPhoto(photo: Photo) {
-        delay(100)
+//        delay(100)
         val json: String = Gson().toJson(photo)
         Log.d("myTag", json);
         _photos = listOf(photo) + _photos

@@ -11,9 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -23,13 +21,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHost
 import androidx.navigation.NavHostController
-import coil.compose.rememberAsyncImagePainter
-import coil.request.ImageRequest
-import kotlinx.coroutines.delay
 
 @Composable
 fun PhotoItem(
@@ -50,17 +43,13 @@ fun PhotoItem(
         var bitmap by remember {
             mutableStateOf<Bitmap?>(null)
         }
-//        photo.bitmap = getBitmap(photo)
-//        LaunchedEffect(key1 = photo.id){
-//            bitmap = getBitmap(photo.download_url)
+
+//        if(bitmap != null && photo.bitmap == null){
+//            val photoWithNewBitmap = Photo(photo.id, photo.url, photo.download_url, bitmap)
+//            updatePhoto(photoWithNewBitmap)
 //        }
 
-        if(bitmap != null && photo.bitmap == null){
-            photo.bitmap = bitmap
-            updatePhoto(photo)
-        }
-
-        if(bitmap == null && photo.bitmap == null){
+        if(bitmap == null){
             LaunchedEffect(key1 = photo.id){
                 bitmap = getBitmap(photo.download_url)
             }
