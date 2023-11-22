@@ -44,12 +44,12 @@ fun PhotoItem(
             mutableStateOf<Bitmap?>(null)
         }
 
-//        if(bitmap != null && photo.bitmap == null){
-//            val photoWithNewBitmap = Photo(photo.id, photo.url, photo.download_url, bitmap)
-//            updatePhoto(photoWithNewBitmap)
-//        }
+        if(bitmap != null && photo.bitmap == null){
+            val photoWithNewBitmap = Photo(photo.id, photo.url, photo.download_url, bitmap)
+            updatePhoto(photoWithNewBitmap)
+        }
 
-        if(bitmap == null){
+        if(bitmap == null && photo.bitmap == null){
             LaunchedEffect(key1 = photo.id){
                 bitmap = getBitmap(photo.download_url)
             }
@@ -62,17 +62,31 @@ fun PhotoItem(
             )
 
         }else {
-            Image(
-                modifier = Modifier.size(128.dp).clickable {
+            if(bitmap == null){
+                Image(
+                    modifier = Modifier.size(128.dp).clickable {
+                        onClick(photo.bitmap)
+                        navController.navigate(Routes.SelectPhoto.route){
+                            launchSingleTop = true
+                            popUpTo(Routes.PhotoList.route)
+                        }
+                    },
+                    bitmap = photo.bitmap!!.asImageBitmap(),
+                    contentDescription = null
+                )
+            } else {
+                Image(
+                    modifier = Modifier.size(128.dp).clickable {
                         onClick(bitmap)
                         navController.navigate(Routes.SelectPhoto.route){
                             launchSingleTop = true
                             popUpTo(Routes.PhotoList.route)
                         }
-                },
-                bitmap = bitmap!!.asImageBitmap(),
-                contentDescription = null
-            )
+                    },
+                    bitmap = bitmap!!.asImageBitmap(),
+                    contentDescription = null
+                )
+            }
         }
     }
 }
