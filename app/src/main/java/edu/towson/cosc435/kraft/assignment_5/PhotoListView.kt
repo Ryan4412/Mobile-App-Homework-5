@@ -1,5 +1,6 @@
 package edu.towson.cosc435.kraft.assignment_5
 
+import android.graphics.Bitmap
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,15 +15,19 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun PhotoListView(
-    photos: List<Photo>
+    photos: List<Photo>,
+    updatePhotos: () -> Unit,
+    getBitmap: suspend (String) -> Bitmap?
 ){
     Box(contentAlignment = Alignment.Center){
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
             modifier = Modifier.fillMaxHeight().fillMaxWidth()
         ) {
+
             items(photos) { photo ->
-                PhotoItem(photo)
+                updatePhotos()
+                PhotoItem(photo, getBitmap)
             }
         }
 

@@ -3,8 +3,10 @@ package edu.towson.cosc435.kraft.assignment_5
 import android.graphics.Bitmap
 
 interface IPhotoRepository {
-    fun addPhoto(photo: Photo)
+    suspend fun addPhoto(photo: Photo)
     fun getPhotos(): List<Photo>
-    fun retreivePhoto(photo: Photo) // todo - return bitmap
+    suspend fun getBitmap(photo: Photo): Bitmap? // todo - return bitmap
     fun togglePhoto(photo: Photo)
+
+    fun updatePhoto(photo: Photo)
 }

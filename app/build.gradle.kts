@@ -69,4 +69,14 @@ dependencies {
 
     // added to assist with nav graph
     implementation ("androidx.navigation:navigation-compose:2.5.3")
+
+    // added to assist with making http requests
+    implementation("com.squareup.okhttp3:okhttp:4.11.0")
+
+    // added to assist with parsing json
+    implementation ("com.google.code.gson:gson:2.10.1")
+
+    // added to help with the image painter
+    implementation("io.coil-kt:coil-compose:2.5.0")
+    implementation ("io.coil-kt:coil-compose:2.2.1")
 }

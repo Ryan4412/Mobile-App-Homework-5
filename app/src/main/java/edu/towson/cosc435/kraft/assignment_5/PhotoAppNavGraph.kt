@@ -16,7 +16,9 @@ import androidx.navigation.compose.composable
           composable(Routes.PhotoList.route){
               val photos by vm._photos
               PhotoListView(
-                  photos
+                  photos,
+                  updatePhotos = vm::awaitPhotos,
+                  getBitmap = vm::getBitmap
               )
        }
     }

@@ -1,9 +1,13 @@
 package edu.towson.cosc435.kraft.assignment_5
 
-import androidx.compose.ui.graphics.ImageBitmap
+import android.graphics.Bitmap
 
 data class Photo(
-    val index: Int,
-    val url: String,
-    val bitmap: ImageBitmap?
+    var id: Int,
+//    var author: String,
+//    var width: Int,
+//    var height: Int,
+    var url: String,
+    var download_url: String,
+    var bitmap: Bitmap?
 )
