@@ -32,6 +32,7 @@ fun PhotoItem(
     onClick: (Bitmap?) -> Unit,
     updatePhoto: (Photo) -> Unit,
 ){
+    // sets all elements in a column that is filled to max width and height, adds 5 data pixels of padding, and centers everything horizontally
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -40,50 +41,53 @@ fun PhotoItem(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
+        // variable to reference the bitmap
         var bitmap by remember {
             mutableStateOf<Bitmap?>(null)
         }
 
-        if(bitmap != null && photo.bitmap == null){
-            val photoWithNewBitmap = Photo(photo.id, photo.url, photo.download_url, bitmap)
-            updatePhoto(photoWithNewBitmap)
+        if(bitmap != null && photo.bitmap == null){ // if the bitmap for this photo has been retrieved but its corresponding photo object does not have the bitmap stored
+            val photoWithNewBitmap = Photo(photo.id, photo.url, photo.download_url, bitmap) // create a new photo object with an updated bitmap
+            updatePhoto(photoWithNewBitmap) // update this photo with the newly updated photo
         }
 
-        if(bitmap == null && photo.bitmap == null){
-            LaunchedEffect(key1 = photo.id){
-                bitmap = getBitmap(photo.download_url)
+        if(bitmap == null && photo.bitmap == null){ // if both the bitmap is null and the photo has never been retrieved
+            LaunchedEffect(key1 = photo.id){ // calls a coroutine to get the photo
+                bitmap = getBitmap(photo.download_url) // save the bitmap returned
             }
-            CircularProgressIndicator(
+            CircularProgressIndicator( // while coroutine is running, display a circular progress indication to show that it is currently being retrieved
                 modifier = Modifier
                     .size(128.dp)
                     .padding(10.dp),
                 color = MaterialTheme.colorScheme.secondary
             )
 
-        }else {
-            if(bitmap == null){
+        }else { // if the bitmap is not null or if the photo has been retrieved before
+            if(bitmap == null){ // check which is null
+                // if bitmap is null display the image using the bitmap stored in the photo object
                 Image(
-                    modifier = Modifier.size(128.dp).clickable {
-                        onClick(photo.bitmap)
-                        navController.navigate(Routes.SelectPhoto.route){
-                            launchSingleTop = true
-                            popUpTo(Routes.PhotoList.route)
+                    modifier = Modifier.size(128.dp).clickable { // makes image clickable
+                        onClick(photo.bitmap) // if photo is clicked send the bitmap to the SelectPhotoViewModel so it can be displayed on the next screen
+                        navController.navigate(Routes.SelectPhoto.route){ // navigate to the SelectPhoto screen
+                            launchSingleTop = true // makes sure there is only one copy of a SelectPhoto screen on the back stack
+                            popUpTo(Routes.PhotoList.route) // pops all routes that do not match the specified route off of the back stack
                         }
                     },
-                    bitmap = photo.bitmap!!.asImageBitmap(),
-                    contentDescription = null
+                    bitmap = photo.bitmap!!.asImageBitmap(), // creates the image using the specified bitmap (uses !! to assert that it is not null)
+                    contentDescription = null // sets the content description to null
                 )
-            } else {
+            } else { // else (if the bitmap is not null)
+                // display the image using the bitmap stored in the bitmap mutable state variable
                 Image(
-                    modifier = Modifier.size(128.dp).clickable {
-                        onClick(bitmap)
-                        navController.navigate(Routes.SelectPhoto.route){
-                            launchSingleTop = true
-                            popUpTo(Routes.PhotoList.route)
+                    modifier = Modifier.size(128.dp).clickable { // makes image clickable
+                        onClick(bitmap) // if photo is clicked send the bitmap to the SelectPhotoViewModel so it can be displayed on the next screen
+                        navController.navigate(Routes.SelectPhoto.route){// navigate to the SelectPhoto screen
+                            launchSingleTop = true // makes sure there is only one copy of a SelectPhoto screen on the back stack
+                            popUpTo(Routes.PhotoList.route) // pops all routes that do not match the specified route off of the back stack
                         }
                     },
-                    bitmap = bitmap!!.asImageBitmap(),
-                    contentDescription = null
+                    bitmap = bitmap!!.asImageBitmap(), // creates the image using the specified bitmap (uses !! to assert that it is not null)
+                    contentDescription = null // sets the content description to null
                 )
             }
         }

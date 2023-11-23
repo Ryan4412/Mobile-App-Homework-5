@@ -23,6 +23,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+                    // calls main screen function to get to the nav controller
                     MainScreen()
                 }
             }

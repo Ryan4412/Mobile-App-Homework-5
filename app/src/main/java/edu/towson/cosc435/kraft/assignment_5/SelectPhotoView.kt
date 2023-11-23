@@ -25,16 +25,16 @@ fun SelectPhotoView(bitmap: Bitmap?){
         .fillMaxHeight(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        if(bitmap == null){
-            CircularProgressIndicator(
+        if(bitmap == null){ // checks if the bitmap passed is null (should never be null)
+            CircularProgressIndicator( // if bitmap is null display a spinning progress indicator
                 modifier = Modifier
                     .width(64.dp)
                     .height(64.dp)
                     .padding(10.dp),
                 color = MaterialTheme.colorScheme.secondary
             )
-        } else {
-            // save bitmap to the list of photos
+        } else { // if bitmap is not null
+            // display the image using the specified bitmap
             Image(
                 modifier = Modifier.size(400.dp),
                 bitmap = bitmap.asImageBitmap(),

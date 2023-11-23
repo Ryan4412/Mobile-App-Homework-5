@@ -7,39 +7,36 @@ import kotlinx.coroutines.delay
 
 class PhotoRepository: IPhotoRepository {
 
-    private var _photos = listOf<Photo>()
-    private var _currentIndex: Int = 0
-    private val pf = PhotoFetcher()
+    private var _photos = listOf<Photo>() // holds the list of photos
+    private val pf = PhotoFetcher() // used to call web api retrieval functions
 
+    // adds a photo to the list that was retrieved as a json object from the web api
     override suspend fun addPhoto(photo: Photo) {
-//        delay(100)
-        val json: String = Gson().toJson(photo)
+        val json: String = Gson().toJson(photo) // used for testing to see that it does retrieve a json object
         Log.d("myTag", json);
-        _photos = listOf(photo) + _photos
+        _photos = listOf(photo) + _photos // adds the photo to the photo list
     }
 
+    // function to return the list of photos held in this photo repository
     override fun getPhotos(): List<Photo> {
         return _photos
     }
 
+    // function used to retrieve a bitmap for a particular photo
     override suspend fun getBitmap(photo: Photo): Bitmap? {
-        val bitmap: Bitmap? = pf.fetchIcon(photo.url)
-        photo.bitmap = bitmap
-//        updatePhoto(photo)
-        return bitmap
+        val bitmap: Bitmap? = pf.fetchIcon(photo.url) // gets bitmap from web api call function
+        photo.bitmap = bitmap // sets this photos bitmap to the bitmap returned
+        return bitmap // returns bitmap to be used
 
     }
 
-    override fun togglePhoto(photo: Photo) {
-        TODO("Not yet implemented")
-    }
-
+    // function to update photo based on the id of the photo passed in
     override fun updatePhoto(photo: Photo) {
-         _photos = _photos.map{ p ->
-            if(photo.id == p.id)
-                photo
+         _photos = _photos.map{ p -> // maps the list of photos to an updated list of photos
+            if(photo.id == p.id) // is the photo ids match
+                photo // replace the photo in the list with this new photo
             else
-                p
+                p// otherwise keep the photo the same
         }
     }
 }

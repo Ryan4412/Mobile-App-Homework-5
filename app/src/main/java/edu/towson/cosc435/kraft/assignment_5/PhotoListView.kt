@@ -22,16 +22,18 @@ fun PhotoListView(
     navController: NavHostController,
     onClick: (Bitmap?) -> Unit
 ){
+    // places the grid in the center of the screen with enough padding to be below the top app bar
     Box(contentAlignment = Alignment.Center,
         modifier = Modifier.padding(top = 50.dp)
         ){
+        // creates a lazy vertical grid that has 2 photos per row and fills the max with and height
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
             modifier = Modifier.fillMaxHeight().fillMaxWidth()
         ) {
 
-            items(photos) { photo ->
-                PhotoItem(photo, getBitmap, navController, onClick, updatePhoto)
+            items(photos) { photo -> // for each cell in the grid
+                PhotoItem(photo, getBitmap, navController, onClick, updatePhoto) // populate it with a PhotoItem composable
             }
         }
 
