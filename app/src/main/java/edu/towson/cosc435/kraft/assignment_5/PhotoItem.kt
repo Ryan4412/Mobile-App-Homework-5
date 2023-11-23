@@ -55,8 +55,7 @@ fun PhotoItem(
             }
             CircularProgressIndicator(
                 modifier = Modifier
-                    .width(64.dp)
-                    .height(64.dp)
+                    .size(128.dp)
                     .padding(10.dp),
                 color = MaterialTheme.colorScheme.secondary
             )
